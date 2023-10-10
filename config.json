@@ -10,7 +10,7 @@
     "twitter": "https://twitter.com/datalad"
   },
   "dataset_options": {
-    "include_metadata_export": true
+    "include_metadata_export": false
   },
   "property_sources": {
     "dataset": {

@@ -231,3 +231,8 @@ li[class="item"]:last-child {
   color: #75787b;
   cursor: pointer;
 }
+
+.def-tooltip .tooltip-inner{
+  max-width: 500px !important;
+  width: 300px !important;
+}

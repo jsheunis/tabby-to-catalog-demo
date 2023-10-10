@@ -197,6 +197,14 @@ const datasetView = () =>
               else {
                 disp_dataset.show_export = false
               }
+              // Additional display and definitions
+              disp_dataset.additional_tabs = dataset.additional_display
+              disp_dataset.display_tabs = []
+              disp_dataset.additional_tab_defs = dataset.additional_display_definitions
+              for (var t=0; t<disp_dataset.additional_tabs.length; t++) {
+                n = disp_dataset.additional_tabs[t].name
+              }
+              disp_dataset.additional_tab_render = {}
               // Write main derived variable and set to ready
               this.displayData = disp_dataset;
               this.display_ready = true;
@@ -518,7 +526,21 @@ const datasetView = () =>
                 this.tabIndex = 0;
               }
             }
-          }
+          },
+          getDefinitionURL(tab, key, nested_key = null, type = 'keys') {
+            if (nested_key != null) {
+              var value = this.displayData.additional_tab_defs[tab][type][key][nested_key]
+              return value
+            } else {
+              var value = this.displayData.additional_tab_defs[tab][type][key]
+              if (typeof value === 'object') {
+                return type == 'keys' ? value.self : value
+              } else {
+                return value
+              }
+
+            }
+          },
         },
         async beforeRouteUpdate(to, from, next) {
           this.tabIndex = 0;
@@ -630,10 +652,10 @@ const datasetView = () =>
             this.$root.selectedDataset.has_files = false;
           }
           // now set the correct tab:
-          this.setCorrectTab(
-            this.$root.selectedDataset.has_subdatasets,
-            this.$root.selectedDataset.has_files
-          )
+          // this.setCorrectTab(
+          //   this.$root.selectedDataset.has_subdatasets,
+          //   this.$root.selectedDataset.has_files
+          // )
           next();
         },
         async created() {
@@ -717,14 +739,15 @@ const datasetView = () =>
           else {
             this.$root.selectedDataset.has_files = false;
           }
-          this.setCorrectTab(
-            this.$root.selectedDataset.has_subdatasets,
-            this.$root.selectedDataset.has_files
-          )
         },
         mounted() {
           this.tag_options_filtered = this.tag_options;
           this.tag_options_available = this.tag_options;
+          this.tabIndex = 0;
+          // this.setCorrectTab(
+          //   this.$root.selectedDataset.has_subdatasets,
+          //   this.$root.selectedDataset.has_files
+          // )
         }
       }
     })
